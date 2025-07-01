@@ -1,0 +1,48 @@
+---
+title: "Median Income"
+author: "Neelam Arshad"
+execute: 
+  echo: false
+  warning: false
+format: html
+---
+
+
+```{r}
+#| message: false
+
+# Load libraries
+library(tidyverse)
+library(tidycensus)
+library(sf)
+
+# Get ACS median income data at the census tract level for Massachusetts
+income <- get_acs(
+  geography = "tract",
+  variables = "B19013_001", # Median Household Income
+  state = "MA",
+  geometry = TRUE,
+  year = 2022)
+
+# Clean up column names
+income_clean <- income %>%
+  rename(median_income = estimate)
+
+# Plot
+ggplot(income_clean) +
+  geom_sf(aes(fill = median_income), color = NA) +
+  scale_fill_viridis_c(
+    option = "plasma",
+    name = "Median Income",
+    labels = scales::dollar_format(),
+    limits = c(0, 250000)
+  ) +
+  theme_minimal() +
+  labs(title = "Median Household Income by Census Tract in Massachusetts",
+    caption = "Source: ACS 5-Year Estimates (2022)"
+  ) +
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 16, face = "bold"),
+    plot.caption = element_text(hjust = 0.5)
+  )
+```
