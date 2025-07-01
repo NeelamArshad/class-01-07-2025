@@ -4,17 +4,31 @@ author: "Neelam Arshad"
 execute: 
   echo: false
   warning: false
+  message: false
 format: html
 ---
 
 
 ```{r}
+#| echo: false
 #| message: false
+#| warning: false
+#| include: false
+#| results: hide
 
 # Load libraries
 library(tidyverse)
 library(tidycensus)
 library(sf)
+```
+
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| results: hide
+
 
 # Get ACS median income data at the census tract level for Massachusetts
 income <- get_acs(
